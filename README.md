@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ISA_Projekat
 
 Backend port: 8080
@@ -15,6 +14,5 @@ Users:
     user3 - aviocompany admin
     user4 - system admin
     password for all - 123
-=======
+
 # BookYourself
->>>>>>> 5310418cfc23f72abd3d6cdf6d248983222dd2a0
