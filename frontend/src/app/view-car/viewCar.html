@@ -1,0 +1,71 @@
+<!-- Button trigger modal -->
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLongTitle">Renta Car</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="overflow-y:scroll;max-height:500px;">
+      <form>
+        <div class="form-row">
+          <img *ngIf="viewCar.image!==undefined" src="../assets/rentaCar/{{viewCar.image}}" width="200" height="200"/>
+        </div>
+        <div class="col">
+          <div class="col-form-label col-md-6">
+            <label>Name</label>
+            <input type="text" class="form-control" value="{{viewCar.name}}"  disabled>
+          </div>
+          <div class="col-form-label col-md-12">
+            <label>Address</label>
+            <input type="text" class="form-control" value="{{viewCar.address}}"  disabled>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea row="5" class="form-control" value="{{viewCar.promoting_add}}" disabled></textarea>
+          </div>
+          <div class="form-group" *ngFor="let b of branch">
+           <table class="table" *ngIf="b.rentService.id===viewCar.id" style="border: 1px solid">
+             <thead class="table-dark text-white">
+             <tr>
+                <th align="center">Branch</th>
+                <th align="center">Name</th>
+                <th align="center">Address</th>
+              </tr>
+             </thead>
+              <tr>
+                <td></td>
+                <td align="center">{{b.name}}</td>
+                <td align="center">{{b.address}}</td>
+              </tr>
+            </table>
+          <div class="form-group" *ngIf="b.rentService.id===viewCar.id">
+            <div *ngFor="let c of cars">
+            <table class="table" *ngIf="c.branch.id===b.id" style="border: 1px solid">
+              <thead class="table-dark text-white">
+              <tr>
+                <th align="center">Cars</th>
+                <th align="center">Model</th>
+                <th align="center">Producer</th>
+                <th align="center">Type</th>
+                <th align="center">Year</th>
+              </tr>
+              </thead>
+              <tr>
+                <td align="center"></td>
+                <td align="center">{{c.model}}</td>
+                <td align="center">{{c.producer}}</td>
+                <td align="center">{{c.type}}</td>
+                <td align="center">{{c.productionYear}}</td>
+              </tr>
+            </table>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="col-form-label col-md-6"><div class="gmap_canvas"><iframe width="350" height="400" id="gmap_canvas" src="https://maps.google.com/maps?q=Kraljice+Marije,Beograd&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.embedgooglemap.net"></a></div><style>.mapouter{text-align:right;height:500px;width:679px;}.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:679px;}</style></div>
+      </form>
+    </div>
+  </div>
+</div>

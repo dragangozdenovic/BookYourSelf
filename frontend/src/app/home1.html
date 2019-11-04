@@ -1,0 +1,365 @@
+<!-- ovo sam dodao -->
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators"  data-slide-to="0" ></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="../assets/images/bg_2.jpg" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="../assets/images/bg_3.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="../assets/images/bg_1.jpg" alt="Third slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<div class="ftco-section-search">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 tabulation-search">
+        <div class="element-animate">
+          <div class="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link p-3 active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"><span>01</span> Flight</a>
+            <a class="nav-link p-3" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false"><span>02</span> Hotel</a>
+            <a class="nav-link p-3" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><span>03</span> Car Rent</a>
+          </div>
+        </div>
+
+        <div class="tab-content py-5" id="v-pills-tabContent">
+          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+            <div class="block-17">
+              <form (submit)="searchFlight($event)" class="d-block d-lg-flex">
+                <div class="fields d-block d-lg-flex">
+                  <div class="textfield-search one-third"><input type="text" id="dest" class="form-control" placeholder="Destination"></div>
+                  <div class="check-in one-third-1"><input type="datetime-local" id="checkin_date1" class="form-control" placeholder="Departure"></div>
+                  <div class="check-out one-third-1"><input type="datetime-local" id="checkout_date2" class="form-control" placeholder="Arrival"></div>
+                  <div class="check-out one-third"><input type="text" id="price" class="form-control" placeholder="Price"></div>
+                </div>
+                <input type="submit" class="search-submit btn btn-primary" value="Find Flights">
+              </form>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+            <div class="block-17">
+              <form (submit)="searchHotel($event)" class="d-block d-lg-flex">
+                <div class="fields d-block d-lg-flex">
+                  <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                      <input type="text" [(ngModel)]="HotName" [ngModelOptions]="{standalone: true}" placeholder="Hotel name/location" aria-label="Number" matInput [matAutocomplete]="auto">
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of AllHotels"  [value]="option.name">
+                          Name: {{option.name}}
+                        </mat-option>
+                        <mat-option *ngFor="let option of AllHotels"  [value]="option.address">
+                          Address: {{option.address}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </form>
+                  <div class="check-in one-third"><input type="date" min="2014-01-01" max="2018-12-31" id="dateIn" name="dateIn" class="form-control" placeholder="Check-in date"></div>
+                  <div class="check-out one-third"><input type="date" min="2014-01-01" max="2018-12-31" id="dateOut" name="dateOut" class="form-control" placeholder="Check-out date"></div>
+                </div>
+                  <input type="submit" class="search-submit btn btn-primary" value="Find Hotels">
+              </form>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+            <div class="block-17">
+              <form (submit)="searchRenta($event)" class="d-block d-lg-flex">
+                <div class="fields d-block d-lg-flex">
+                  <div class="textfield-search one-third"><input type="text" class="form-control" id="model" name="model" placeholder="Model"></div>
+                  <div class="textfield-search one-third"><input type="text" class="form-control" id="producer" name="producer" placeholder="Producer"></div>
+                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                  <select class="form-control" id="type" style="background-color: #ff5f5f !important;">
+                    <option value="">Type</option>
+                    <option value="limuzina">limuzina</option>
+                    <option value="dzip">dzip</option>
+                  </select>
+                  <div class="check-out one-third"><input type="text" id="year" name="year" class="form-control" placeholder="Year"/></div>
+                </div>
+                <input type="submit" class="search-submit btn btn-primary" value="Find Car">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END slider -->
+
+<section class="ftco-section-2">
+  <div class="container-fluid d-flex">
+    <div class="section-2-blocks-wrapper row no-gutters">
+      <div class="img col-sm-12 col-lg-6" style="background-image: url('../assets/images/tour-1.jpg');">
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="button popup-vimeo"><span class="ion-ios-play"></span></a>
+      </div>
+      <div class="text col-lg-6">
+        <div class="text-inner align-self-start">
+          <h3>Welcome to Bon Voyage since 1898 established Far far away.</h3>
+          <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+          <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ftco-section bg-light">
+  <div class="container">
+    <div class="row justify-content-center mb-5 pb-5">
+      <div class="col-md-7 text-center heading-section">
+        <h2>Our Services</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-lg-3 d-flex align-self-stretch">
+        <div class="media block-6 services d-block text-center">
+          <div class="d-flex justify-content-center"><div class="icon d-flex justify-content-center mb-3"><span class="align-self-center flaticon-sailboat"></span></div></div>
+          <div class="media-body p-2">
+            <h3 class="heading">Special Activities</h3>
+            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 d-flex align-self-stretch ">
+        <div class="media block-6 services d-block text-center">
+          <div class="d-flex justify-content-center"><div class="icon d-flex justify-content-center mb-3"><span class="align-self-center flaticon-around"></span></div></div>
+          <div class="media-body p-2">
+            <h3 class="heading">Travel Arrangements</h3>
+            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 d-flex align-self-stretch ftco-animate">
+        <div class="media block-6 services d-block text-center">
+          <div class="d-flex justify-content-center"><div class="icon d-flex justify-content-center mb-3"><span class="align-self-center flaticon-compass"></span></div></div>
+          <div class="media-body p-2">
+            <h3 class="heading">Private Guide</h3>
+            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 d-flex align-self-stretch ftco-animate">
+        <div class="media block-6 services d-block text-center">
+          <div class="d-flex justify-content-center"><div class="icon d-flex justify-content-center mb-3"><span class="align-self-center flaticon-map-of-roads"></span></div></div>
+          <div class="media-body p-2">
+            <h3 class="heading">Location Manager</h3>
+            <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="ftco-section">
+  <div class="container-fluid">
+    <div class="row no-gutters justify-content-center mb-5 pb-5 ftco-animate">
+      <div class="col-md-7 text-center heading-section">
+        <h2>Most Popular AvioCompany</h2>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-md-6 col-lg-3 ftco-animate" *ngFor="let av of avio">
+        <a routerLink="/viewAvio" (click)="avioComp(av)" data-toggle="modal" data-target="#exampleModalLong3" class="block-5">
+          <img src="../assets/avioCompany/{{av.image}}">
+          <div class="text">
+            <h3 class="heading" id="name">{{av.name}}</h3>
+            <div class="post-meta">
+              <span>Address : {{av.address}}</span>
+              <span>Description : {{av.promoDescription}}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="ftco-section">
+  <div class="container-fluid">
+    <div class="row no-gutters justify-content-center mb-5 pb-5 ftco-animate">
+      <div class="col-md-7 text-center heading-section">
+        <h2>Most Popular Hotel</h2>
+      </div>
+    </div>
+    <div class="row no-gutters" >
+      <div class="col-md-6 col-lg-3 ftco-animate" *ngFor="let hot of hotels">
+        <a routerLink="/viewHotel" (click)="hotelPrev(hot)" data-toggle="modal" data-target="#exampleModalLong2" class="block-5">
+          <img src="../assets/hotels/{{hot.image}}">
+          <div class="text">
+            <h3 class="heading">{{hot.name}}</h3>
+            <div class="post-meta">
+              <span>Address : {{hot.address}}</span>
+              <span>Description : {{hot.promoDescription}}</span>
+            </div>
+            <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span> <span>{{hot.income}}</span></p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="ftco-section">
+  <div class="container-fluid">
+    <div class="row no-gutters justify-content-center mb-5 pb-5 ftco-animate">
+      <div class="col-md-7 text-center heading-section">
+        <h2>Most Popular Rent-a Car</h2>
+      </div>
+    </div>
+    <div class="row no-gutters" >
+      <div class="col-md-6 col-lg-3 ftco-animate" *ngFor="let c of rentaCars">
+        <a routerLink="/viewCar" (click)="rentaPrev(c)" data-toggle="modal" data-target="#exampleModalLong4" class="block-5">
+          <img src="../assets/rentaCar/{{c.image}}">
+          <div class="text">
+            <span class="price"></span>
+            <h3 class="heading">{{c.name}}</h3>
+            <div class="post-meta">
+              <span>Address: {{c.address}}</span>
+              <span>Description: {{c.promoting_add}}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="ftco-section testimony-section">
+  <div class="container">
+    <div class="row justify-content-center mb-5 pb-5">
+      <div class="col-md-7 text-center heading-section ftco-animate">
+        <h2>Our Satisfied Guests says</h2>
+      </div>
+    </div>
+    <div class="row ftco-animate">
+      <div class="carousel owl-carousel ftco-owl">
+        <div class="item text-center">
+          <div class="testimony-wrap p-4 pb-5">
+            <div class="user-img mb-4" style="background-image: url('../assets/images/person_1.jpg')" ></div>
+            <div class="text">
+              <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span></p>
+              <p class="mb-5">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <p class="name">Dennis Green</p>
+              <span class="position">Guests from Italy</span>
+            </div>
+          </div>
+        </div>
+        <div class="item text-center">
+          <div class="testimony-wrap p-4 pb-5">
+            <div class="user-img mb-4" style="background-image: url('../assets/images/person_2.jpg')"></div>
+            <div class="text">
+              <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span></p>
+              <p class="mb-5">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <p class="name">Dennis Green</p>
+              <span class="position">Guests from Italy</span>
+            </div>
+          </div>
+        </div>
+        <div class="item text-center">
+          <div class="testimony-wrap p-4 pb-5">
+            <div class="user-img mb-4" style="background-image: url('../assets/images/person_3.jpg')"></div>
+            <div class="text">
+              <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span></p>
+              <p class="mb-5">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <p class="name">Dennis Green</p>
+              <span class="position">Guests from Italy</span>
+            </div>
+          </div>
+        </div>
+        <div class="item text-center">
+          <div class="testimony-wrap p-4 pb-5">
+            <div class="user-img mb-4" style="background-image: url('../assets/images/person_1.jpg')"></div>
+            <div class="text">
+              <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span></p>
+              <p class="mb-5">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <p class="name">Dennis Green</p>
+              <span class="position">Guests from Italy</span>
+            </div>
+          </div>
+        </div>
+        <div class="item text-center">
+          <div class="testimony-wrap p-4 pb-5">
+            <div class="user-img mb-4" style="background-image: url('../assets/images/person_1.jpg')"></div>
+            <div class="text">
+              <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span></p>
+              <p class="mb-5">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <p class="name">Dennis Green</p>
+              <span class="position">Guests from Italy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ftco-section">
+  <div class="container-fluid">
+    <div class="row mb-5 pb-5 no-gutters">
+      <div class="col-lg-4 bg-light p-3 p-md-5 d-flex align-items-center heading-section ftco-animate">
+        <div>
+          <h2 class="mb-5 pb-3">Want to get our hottest travel deals top tips and advice? Subscribe us now!</h2>
+          <form action="#" class="subscribe-form">
+            <div class="form-group">
+              <span class="icon icon-paper-plane"></span>
+              <input type="text" class="form-control" placeholder="Enter your email address">
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-8 p-2 pl-md-5 heading-section">
+        <h2 class="mb-5 p-2 pb-3 ftco-animate">Most Recommended Hotels</h2>
+        <div class="row no-gutters d-flex">
+          <div class="col-md-4 ftco-animate">
+            <a href="#" class="block-5" style="background-image: url('../assets/hotels/hotel-1.jpg');">
+              <div class="text">
+                <span class="price">$29/night</span>
+                <h3 class="heading">Luxe Hotel</h3>
+                <div class="post-meta">
+                  <span>Ameeru Ahmed Magu Male’, Maldives</span>
+                </div>
+                <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span> <span>500 reviews</span></p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4 ftco-animate">
+            <a href="#" class="block-5" style="background-image: url('../assets/hotels/hotel-2.jpg');">
+              <div class="text">
+                <span class="price">$32/night</span>
+                <h3 class="heading">Deluxe Hotel</h3>
+                <div class="post-meta">
+                  <span>Ameeru Ahmed Magu Male’, Maldives</span>
+                </div>
+                <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span> <span>500 reviews</span></p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4 ftco-animate">
+            <a href="#" class="block-5" style="background-image: url('../assets/hotels/hotel-3.jpg');">
+              <div class="text">
+                <span class="price">$36/night</span>
+                <h3 class="heading">Deluxe Hotel</h3>
+                <div class="post-meta">
+                  <span>Ameeru Ahmed Magu Male’, Maldives</span>
+                </div>
+                <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span> <span>500 reviews</span></p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

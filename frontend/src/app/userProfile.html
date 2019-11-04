@@ -1,0 +1,1894 @@
+<section class="home-slider owl-carousel">
+  <div class="slider-item" style="background-image: url('../assets/images/userProfile.jpg');"
+       data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row slider-text align-items-center">
+        <div class="col-md-7 col-sm-12 ftco-animate">
+          <p class="breadcrumbs"><span class="mr-2"><a routerLink="/">Home</a></span> <span>Hotels</span></p>
+          <h1 class="mb-3">User Profile</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id=" user-profile-2" class="user-profile">
+  <div class="tabbable">
+    <ul class="nav nav-tabs padding-18">
+      <li class="active" id="P">
+        <a data-toggle="tab" href="#home">
+          <i class="green ace-icon fa fa-user bigger-120"></i>
+          Profile
+        </a>
+      </li>
+      <li *ngIf="userProfile.avioCompany" class="active" id="A">
+        <a data-toggle="tab" href="#home1">
+          <i class="green ace-icon fa fa-user bigger-120"></i>
+          Aviocompany profile
+        </a>
+      </li>
+      <li *ngIf="userProfile.hotel" class="active" id="H">
+        <a data-toggle="tab" href="#home3">
+          <i class="green ace-icon fa fa-user bigger-120"></i>
+          Hotel profile
+        </a>
+      </li>
+      <li *ngIf="authority=='ADMIN_ADMIN'" class="active" id="C">
+        <a data-toggle="tab" href="#home4">
+          <i class="green ace-icon fa fa-user bigger-120"></i>
+          Avio/Hotel/Rent
+        </a>
+      </li>
+      <li *ngIf="authority=='ADMIN_ADMIN'" class="active" id="U">
+        <a data-toggle="tab" href="#home5">
+          <i class="green ace-icon fa fa-user bigger-120"></i>
+          Users
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content no-border padding-24">
+      <div id="home" class="tab-pane in active">
+        <div class="row">
+          <div class="col-xs-12 col-sm-3 center">
+							<span class="profile-picture">
+								<img class="editable img-responsive" alt=" Avatar" id="avatar2"
+                     src="http://bootdey.com/img/Content/avatar/avatar6.png">
+							</span>
+
+            <div class="space space-4"></div>
+
+
+            <button class="btn btn-sm btn-block btn-success" (click)="searchFriends()">Add a friend</button>
+            <button class="btn btn-sm btn-block btn-primary" (click)="friendList()">My friends</button>
+            <button class="btn btn-sm btn-block btn-success" (click)="getFriendRequests()">Friend requests</button>
+            <div hidden="{{isHidden}}">
+              <h4 class="blue">
+                <span class="middle">My friends</span>
+              </h4>
+
+
+              <table>
+                <tr *ngFor="let friend of friends">
+                  <td>
+                    <div class="profile-info-row">
+                      <div class="profile-info-name"> {{friend}}</div>
+                      <div class="profile-info-value">
+                        <button (click)="removeFriend(friend)">Remove</button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div hidden="{{isHiddenSearch}}">
+              <h4 class="blue">
+                <span class="middle">Search friends</span>
+              </h4>
+              <form (submit)="searchByName($event)">
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Name:</div>
+                  <div class="profile-info-value">
+                    <input id="nameSearch" type="text"/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name">Surname:</div>
+                  <div class="profile-info-value">
+                    <input id="lastNameSearch" type="text"/>
+                  </div>
+                </div>
+
+                <div class="profile-info-value">
+                  <button type="submit">Search</button>
+                </div>
+
+
+                <table>
+                  <tr *ngFor="let possibleFriend of possibleFriends">
+                    <td>
+                      <div class="profile-info-row">
+                        <div class="profile-info-name"> {{possibleFriend.username}}</div>
+                        <div class="profile-info-name"> {{possibleFriend.name}}</div>
+                        <div class="profile-info-name"> {{possibleFriend.surname}}</div>
+
+                        <div class="profile-info-value">
+                          <button (click)="addFriend(possibleFriend.username)">Add</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                </table>
+              </form>
+            </div>
+            <div hidden="{{isHiddenRequest}}">
+              <h4 class="blue">
+                <span class="middle">Friend requests</span>
+              </h4>
+              <table>
+                <tr *ngFor="let req of friendRequests">
+                  <td>
+                    <div class="profile-info-row">
+                      <div class="profile-info-name"> {{req.sender.username}}</div>
+                      <div class="profile-info-name"> {{req.sender.name}}</div>
+                      <div class="profile-info-name"> {{req.sender.surname}}</div>
+
+                      <div class="profile-info-value">
+                        <button (click)="acceptFriendRequest(req.sender.username)">Accept</button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+              </table>
+            </div>
+          </div><!-- /.col -->
+
+
+          <div class="space space-4"></div>
+          <div class="space space-4"></div>
+          <div class="space space-4"></div>
+          <!--OVDE-->
+
+          <div class="col-xs-12 col-sm-9">
+            <h4 class="blue">
+              <span class="middle">My profile</span>
+            </h4>
+            <form (submit)="changeInfo($event)">
+              <div class="profile-user-info">
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Username</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="usernameChange" value={{userProfile.username}} disabled/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Email</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="emailChange" value={{userProfile.email}}/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Location</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="cityChange" value={{userProfile.city}}/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Name</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="nameChange" value={{userProfile.name}}/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Last name</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="surnameChange" value={{userProfile.surname}}/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Phone number</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="numberChange" value={{userProfile.number}}/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Old password</div>
+
+                  <div class="profile-info-value">
+                    <input type="password" id="pass1"/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> New password</div>
+
+                  <div class="profile-info-value">
+                    <input type="password" id="pass2"/>
+                  </div>
+                </div>
+
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"></div>
+
+                  <div class="profile-info-value">
+                    <button type="submit">Submit changes</button>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+
+
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+
+        <div class="space-20"></div>
+
+        <!--<div class="row">-->
+        <!--<div class="col-xs-12 col-sm-6">-->
+        <!--<div class="widget-box transparent">-->
+        <!--<div class="widget-header widget-header-small">-->
+        <!--<h4 class="widget-title smaller">-->
+        <!--<i class="ace-icon fa fa-check-square-o bigger-110"></i>-->
+        <!--Little About Me-->
+        <!--</h4>-->
+        <!--</div>-->
+
+        <!--<div class="widget-body">-->
+        <!--<div class="widget-main">-->
+        <!--<p>-->
+        <!--My job is mostly lorem ipsuming and dolor sit ameting as long as consectetur adipiscing elit.-->
+        <!--</p>-->
+        <!--<p>-->
+        <!--Sometimes quisque commodo massa gets in the way and sed ipsum porttitor facilisis.-->
+        <!--</p>-->
+        <!--<p>-->
+        <!--The best thing about my job is that vestibulum id ligula porta felis euismod and nullam quis risus-->
+        <!--eget urna mollis ornare.-->
+        <!--</p>-->
+        <!--<p>-->
+        <!--Thanks for visiting my profile.-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+      </div><!-- /#home -->
+
+      <!--<div id="feed" class="tab-pane">-->
+      <!--<div class="profile-feed row">-->
+      <!--<div class="col-sm-6">-->
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<img class="pull-left" alt="Alex Doe's avatar"-->
+      <!--src="http://bootdey.com/img/Content/avatar/avatar1.png">-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+      <!--changed his profile photo.-->
+      <!--<a href="#">Take a look</a>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--an hour ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<img class="pull-left" alt="Susan Smith's avatar"-->
+      <!--src="http://bootdey.com/img/Content/avatar/avatar2.png">-->
+      <!--<a class="user" href="#"> Susan Smith </a>-->
+
+      <!--is now friends with Alex Doe.-->
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--2 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<i class="pull-left thumbicon fa fa-check btn-success no-hover"></i>-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+      <!--joined-->
+      <!--<a href="#">Country Music</a>-->
+
+      <!--group.-->
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--5 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<i class="pull-left thumbicon fa fa-picture-o btn-info no-hover"></i>-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+      <!--uploaded a new photo.-->
+      <!--<a href="#">Take a look</a>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--5 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<img class="pull-left" alt="David Palms's avatar"-->
+      <!--src="http://bootdey.com/img/Content/avatar/avatar3.png">-->
+      <!--<a class="user" href="#"> David Palms </a>-->
+
+      <!--left a comment on Alex's wall.-->
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--8 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>&lt;!&ndash; /.col &ndash;&gt;-->
+
+      <!--<div class="col-sm-6">-->
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<i class="pull-left thumbicon fa fa-pencil-square-o btn-pink no-hover"></i>-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+      <!--published a new blog post.-->
+      <!--<a href="#">Read now</a>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--11 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<img class="pull-left" alt="Alex Doe's avatar"-->
+      <!--src="http://bootdey.com/img/Content/avatar/avatar4.png">-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+
+      <!--upgraded his skills.-->
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--12 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<i class="pull-left thumbicon fa fa-key btn-info no-hover"></i>-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+
+      <!--logged in.-->
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--12 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<i class="pull-left thumbicon fa fa-power-off btn-inverse no-hover"></i>-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+
+      <!--logged out.-->
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--16 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="profile-activity clearfix">-->
+      <!--<div>-->
+      <!--<i class="pull-left thumbicon fa fa-key btn-info no-hover"></i>-->
+      <!--<a class="user" href="#"> Alex Doe </a>-->
+
+      <!--logged in.-->
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o bigger-110"></i>-->
+      <!--16 hours ago-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#" class="blue">-->
+      <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#" class="red">-->
+      <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>&lt;!&ndash; /.col &ndash;&gt;-->
+      <!--</div>&lt;!&ndash; /.row &ndash;&gt;-->
+
+      <!--<div class="space-12"></div>-->
+
+      <!--<div class="center">-->
+      <!--<button type="button" class="btn btn-sm btn-primary btn-white btn-round">-->
+      <!--<i class="ace-icon fa fa-rss bigger-150 middle orange2"></i>-->
+      <!--<span class="bigger-110">View more activities</span>-->
+
+      <!--<i class="icon-on-right ace-icon fa fa-arrow-right"></i>-->
+      <!--</button>-->
+      <!--</div>-->
+      <!--</div>&lt;!&ndash; /#feed &ndash;&gt;-->
+
+      <!--<div id="friends" class="tab-pane">-->
+      <!--<div class="profile-users clearfix">-->
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar6.png" alt="Bob Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-online"></span>-->
+      <!--Bob Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">Content Editor</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 orange"></i>-->
+      <!--<span class="green"> 20 mins ago </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Rose Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-offline"></span>-->
+      <!--Rose Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">Graphic Designer</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 grey"></i>-->
+      <!--<span class="grey"> 30 min ago </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar2.png" alt="Jim Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-busy"></span>-->
+      <!--Jim Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">SEO &amp; Advertising</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 red"></i>-->
+      <!--<span class="grey"> 1 hour ago </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar3.png" alt="Alex Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-idle"></span>-->
+      <!--Alex Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">Marketing</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 orange"></i>-->
+      <!--<span class=""> 40 minutes idle </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar4.png" alt="Phil Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-online"></span>-->
+      <!--Phil Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">Public Relations</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 orange"></i>-->
+      <!--<span class="green"> 2 hours ago </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar6.png" alt="Susan Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-online"></span>-->
+      <!--Susan Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">HR Management</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 orange"></i>-->
+      <!--<span class="green"> 20 mins ago </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Jennifer Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-offline"></span>-->
+      <!--Jennifer Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">Graphic Designer</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 grey"></i>-->
+      <!--<span class="grey"> 2 hours ago </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="itemdiv memberdiv">-->
+      <!--<div class="inline pos-rel">-->
+      <!--<div class="user">-->
+      <!--<a href="#">-->
+      <!--<img src="http://bootdey.com/img/Content/avatar/avatar2.png" alt="Alexa Doe's avatar">-->
+      <!--</a>-->
+      <!--</div>-->
+
+      <!--<div class="body">-->
+      <!--<div class="name">-->
+      <!--<a href="#">-->
+      <!--<span class="user-status status-offline"></span>-->
+      <!--Alexa Doe-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="popover">-->
+      <!--<div class="arrow"></div>-->
+
+      <!--<div class="popover-content">-->
+      <!--<div class="bolder">Accounting</div>-->
+
+      <!--<div class="time">-->
+      <!--<i class="ace-icon fa fa-clock-o middle bigger-120 grey"></i>-->
+      <!--<span class="grey"> 4 hours ago </span>-->
+      <!--</div>-->
+
+      <!--<div class="hr dotted hr-8"></div>-->
+
+      <!--<div class="tools action-buttons">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-facebook-square blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-google-plus-square red bigger-150"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="hr hr10 hr-double"></div>-->
+
+      <!--<ul class="pager pull-right">-->
+      <!--<li class="previous disabled">-->
+      <!--<a href="#">← Prev</a>-->
+      <!--</li>-->
+
+      <!--<li class="next">-->
+      <!--<a href="#">Next →</a>-->
+      <!--</li>-->
+      <!--</ul>-->
+      <!--</div>&lt;!&ndash; /#friends &ndash;&gt;-->
+
+      <!--<div id="pictures" class="tab-pane">-->
+      <!--<ul class="ace-thumbnails">-->
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/1/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/2/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/3/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/4/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/5/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/6/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/7/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+
+      <!--<li>-->
+      <!--<a href="#" data-rel="colorbox">-->
+      <!--<img alt="150x150" src="http://lorempixel.com/200/200/nature/1/">-->
+      <!--<div class="text">-->
+      <!--<div class="inner">Sample Caption on Hover</div>-->
+      <!--</div>-->
+      <!--</a>-->
+
+      <!--<div class="tools tools-bottom">-->
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-link"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-paperclip"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-pencil"></i>-->
+      <!--</a>-->
+
+      <!--<a href="#">-->
+      <!--<i class="ace-icon fa fa-times red"></i>-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+      <!--</ul>-->
+      <!--</div>&lt;!&ndash; /#pictures &ndash;&gt;-->
+
+      <div id="home1" class="tab-pane" *ngIf="userProfile.avioCompany">
+        <div class="col-xs-12 col-sm-9">
+          <h4 class="blue">
+            <span class="middle">Avio company</span>
+          </h4>
+          <form (submit)="changeAvioInfo($event)">
+            <div class="profile-user-info">
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Name</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="avioName" value={{userProfile.avioCompany.name}} disabled/>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Address</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="avioAddress" value={{userProfile.avioCompany.address}}/>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Promo description</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="avioPromoDescription" value={{userProfile.avioCompany.promoDescription}}/>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Income since start</div>
+
+                <div class="profile-info-value">
+                  {{this.avioIncome}}
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Locations</div>
+
+                <table>
+                  <tr>
+                    <td align="center"><b>Airport</b></td>
+                    <td align="center"><b>City</b></td>
+                    <td align="center"><b>Country</b></td>
+                  </tr>
+                  <tr *ngFor="let location of userProfile.avioCompany.locations">
+                    <td align="center">{{location.airport}}</td>
+                    <td align="center">{{location.city}}</td>
+                    <td align="center">{{location.country}}</td>
+                  </tr>
+                </table>
+
+              </div>
+
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"></div>
+
+                <div class="profile-info-value">
+                  <button type="submit">Submit changes</button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+          <div><canvas id="chartContainer1" style="height: 370px; width: 50%;"></canvas></div>
+          <button class="btn btn-sm btn-block btn-success" (click)="showLocationDialog()">Add a location</button>
+
+          <div hidden="{{newLocationHidden}}">
+            <h4 class="blue">
+              <span class="middle">Add a Location</span>
+            </h4>
+
+            <table>
+              <tr>
+                <td align="center"><b>Airport</b></td>
+                <td align="center"><b>City</b></td>
+                <td align="center"><b>Country</b></td>
+                <td align="center"></td>
+              </tr>
+              <tr *ngFor="let location of possibleLocations">
+                <td align="center">{{location.airport}}</td>
+                <td align="center">{{location.city}}</td>
+                <td align="center">{{location.country}}</td>
+                <td align="center">
+                  <button (click)="addLocation(location)">Add</button>
+                </td>
+              </tr>
+            </table>
+
+          </div>
+
+          <button class="btn btn-sm btn-block btn-primary" (click)="showLocationDeleteDialog()">Delete locations
+          </button>
+          <div hidden="{{deleteLocationHidden}}">
+            <h4 class="blue">
+              <span class="middle">Delete a Location</span>
+            </h4>
+
+
+            <table>
+              <tr>
+                <td align="center"><b>Airport</b></td>
+                <td align="center"><b>City</b></td>
+                <td align="center"><b>Country</b></td>
+                <td align="center"></td>
+              </tr>
+              <tr *ngFor="let location of userProfile.avioCompany.locations">
+                <td align="center">{{location.airport}}</td>
+                <td align="center">{{location.city}}</td>
+                <td align="center">{{location.country}}</td>
+                <td align="center">
+                  <button (click)="deleteLocation(location)">Delete</button>
+                </td>
+              </tr>
+            </table>
+
+          </div>
+          <button class="btn btn-sm btn-block btn-success" (click)="showFlightDialog()">Add flights</button>
+          <div hidden="{{addFlightHidden}}">
+            <h4 class="blue">
+              <span class="middle">Add a flight</span>
+            </h4>
+
+            <form (submit)="addFlight($event)">
+              <div class="profile-user-info">
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Destination</div>
+
+                  <div class="profile-info-value">
+                    <select id="destinationFlight">
+                      <option *ngFor="let location of userProfile.avioCompany.locations" value="{{location.id}}">
+                        {{location.airport}}, {{location.city}}, {{location.country}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Connecting airports</div>
+
+                  <div class="profile-info-value">
+                    <table>
+                      <tr *ngFor="let location of userProfile.avioCompany.locations">
+                        <td>{{location.airport}}, {{location.city}}, {{location.country}}</td>
+                        <td>
+                          <button type="button" (click)="addLocationToFlight(location)">Add</button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Flight time</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="flightTimeFlight"/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Ticket price</div>
+
+                  <div class="profile-info-value">
+                    <input type="text" id="ticketPriceFlight"/>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Departure time</div>
+
+                  <div class="profile-info-value">
+                    <input type="datetime-local" id="departure" placeholder="Departure">
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Arrival time</div>
+
+                  <div class="profile-info-value">
+                    <input type="datetime-local" id="arrival" placeholder="Departure">
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"></div>
+
+                  <div class="profile-info-value">
+                    <button type="submit">Add</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+
+          <button class="btn btn-sm btn-block btn-primary" (click)="showAllFlightsDialog()">Show flights</button>
+          <div hidden="{{allFlightsHidden}}">
+            <h4 class="blue">
+              <span class="middle">All flights</span>
+            </h4>
+            <form (submit)="addTicket($event)">
+              <table>
+                <tr>
+                  <td align="center"><b>Destination</b></td>
+                  <td align="center"><b>Departure</b></td>
+                  <td align="center"><b>Arrival</b></td>
+                  <td align="center"><b>Ticket price</b></td>
+                  <td align="center"><b>Seat number</b></td>
+                  <td align="center"><b>Fast reservation discount</b></td>
+                  <td align="center"></td>
+                </tr>
+                <tr *ngFor="let flight of ourFlights">
+                  <td align="center">{{flight.locationDTO.airport}}, {{flight.locationDTO.city}},
+                    {{flight.locationDTO.country}}
+                  </td>
+                  <td align="center">{{flight.departureTime | date : 'dd/MM/yyyy' }}</td>
+                  <td align="center">{{flight.arrivalTime | date : 'dd/MM/yyyy' }}</td>
+                  <td align="center">{{flight.ticketPrice}}</td>
+                  <td align="center"><input name="proba{{flight.id}}" type="text"/></td>
+                  <td align="center"><input name="proba1{{flight.id}}" type="text"/></td>
+
+                  <td align="center"><button (click)="pickFlight(flight)" type="submit">Add</button></td>
+
+                  <td align="center">
+                    <button (click)="pickFlight(flight)" type="submit">Add</button>
+                  </td>
+
+                </tr>
+              </table>
+            </form>
+          </div>
+
+          <button class="btn btn-sm btn-block btn-success" (click)="showAllTicketsDialog()">Show tickets</button>
+          <div hidden="{{allTicketsHidden}}">
+            <h4 class="blue">
+              <span class="middle">Unreserved tickets</span>
+            </h4>
+            <h5 class="red">
+              <span class="middle">Setting fast reservation discount of a ticket to a number bigger than zero makes it become a fast reservation ticket.</span>
+            </h5>
+
+            <form (submit)="changeTicket($event)">
+              <table>
+                <tr>
+                  <td align="center"><b>Destination</b></td>
+                  <td align="center"><b>Departure</b></td>
+                  <td align="center"><b>Arrival</b></td>
+                  <td align="center"><b>Ticket price</b></td>
+                  <td align="center"><b>Seat number</b></td>
+                  <td align="center"><b>Fast reservation discount (%)</b></td>
+                </tr>
+
+                <tr *ngFor="let ticket of unreservedTickets">
+                  <td hidden="true"><input type="text" value="{{ticket.id}}" id="id{{ticket.id}}"/></td>
+                  <td hidden="true"><input type="text" value="{{ticket.flight.id}}" id="flight{{ticket.id}}"/></td>
+                  <td align="center">{{ticket.flight.locationDTO.airport}}, {{ticket.flight.locationDTO.city}},
+                    {{ticket.flight.locationDTO.country}}
+                  </td>
+                  <td align="center">{{ticket.flight.departureTime | date : 'dd/MM/yyyy' }}</td>
+                  <td align="center">{{ticket.flight.arrivalTime | date : 'dd/MM/yyyy' }}</td>
+                  <td align="center">{{ticket.flight.ticketPrice}}</td>
+                  <td align="center"><input type="text" name="proba{{ticket.id}}" value={{ticket.seatNumber}}/></td>
+                  <td align="center"><input type="text" name="proba1{{ticket.id}}"
+                                            value="{{ticket.fastReservationDiscount}}"/></td>
+
+                  <td align="center">
+                    <button (click)="pickTicket(ticket.id)" type="submit">Submit</button>
+                  </td>
+                  <td align="center">
+                    <button (click)="deleteTicket(ticket.id)">Delete</button>
+                  </td>
+
+                </tr>
+
+              </table>
+            </form>
+
+            <h4 class="blue">
+              <span class="middle">Unreserved tickets(fast reservation)</span>
+            </h4>
+            <h5 class="red">
+              <span class="middle">Setting fast reservation discount of a ticket to zero makes it become a regular ticket.</span>
+            </h5>
+
+            <table>
+              <tr>
+                <td align="center"><b>Destination</b></td>
+                <td align="center"><b>Departure</b></td>
+                <td align="center"><b>Arrival</b></td>
+                <td align="center"><b>Ticket price</b></td>
+                <td align="center"><b>Seat number</b></td>
+                <td align="center"><b>Fast reservation discount (%)</b></td>
+              </tr>
+              <tr *ngFor="let ticket of fastReserveTickets">
+                <td align="center">{{ticket.flight.locationDTO.airport}}, {{ticket.flight.locationDTO.city}},
+                  {{ticket.flight.locationDTO.country}}
+                </td>
+                <td align="center">{{ticket.flight.departureTime | date : 'dd/MM/yyyy' }}</td>
+                <td align="center">{{ticket.flight.arrivalTime | date : 'dd/MM/yyyy' }}</td>
+                <td align="center">{{ticket.flight.ticketPrice}}</td>
+                <td align="center"><input type="text" value={{ticket.seatNumber}}/></td>
+                <td align="center"><input type="text" value={{ticket.fastReservationDiscount}}/></td>
+                <td align="center">
+                  <button>Submit</button>
+                </td>
+                <td align="center">
+                  <button>Delete</button>
+                </td>
+              </tr>
+            </table>
+
+          </div>
+          <button class="btn btn-sm btn-block btn-primary" (click)="showAllPricesDialog()">Show prices</button>
+          <div hidden="{{allPricesHidden}}">
+            <h4 class="blue">
+              <span class="middle">Pricings</span>
+            </h4>
+            <form (submit)="changePricing($event)">
+              <table border="1">
+                <tr>
+                  <td align="center"><b>Name</b></td>
+                  <td align="center"><b>Price</b></td>
+                  <td align="center"></td>
+                  <td align="center"></td>
+                </tr>
+                <tr *ngFor="let pricing of userProfile.avioCompany.prices">
+                  <td align="center"><input type="text" name="priceName{{pricing.id}}" value="{{pricing.name}}"/></td>
+                  <td align="center"><input type="number" name="pricePrice{{pricing.id}}" value="{{pricing.price}}"/>
+                  </td>
+                  priceName{{pricing.id}}
+                  <td align="center">
+                    <button (click)="pickPricing(pricing)" type="submit">Change</button>
+                  </td>
+                  <td align="center">
+                    <button (click)="deletePricing(pricing)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+            </form>
+            <form (submit)="addPricing($event)">
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Pricing name</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="name"/>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Pricing, well, price</div>
+
+                <div class="profile-info-value">
+                  <input type="number" id="price">
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-value">
+                    <button type="submit">Add</button>
+                  </div>
+                </div>
+              </div>
+
+
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+        <!--HOTEL-->
+      <div *ngIf="userProfile.hotel" id="home3" class="tab-pane">
+          <div class="col-xs-12 col-sm-9">
+            <h4 class="blue">
+              <span class="middle">Hotels</span>
+            </h4>
+            <form (submit)="changeHotelInfo($event)">
+              <div class="profile-user-info">
+                <div class="profile-info-row">
+                  <div class="profile-info-name">Name</div>
+                  <div class="profile-info-value">
+                    <input type="text" id="nameH" value={{userProfile.hotel.name}} disabled/>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Address</div>
+                  <div class="profile-info-value">
+                    <input type="text" id="address" value={{userProfile.hotel.address}}/>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Promo description</div>
+                  <div class="profile-info-value">
+                    <textarea row="5" id="promo"  value={{userProfile.hotel.promoDescription}}></textarea>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name">Hotel Total price </div>
+                  <div class="profile-info-value">
+                    <p>{{prihodHotela}}</p>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Hotel Favour</div>
+                  <table class="table">
+                    <thead class="table-dark text-white">
+                    <tr>
+                      <th align="center">Favour name</th>
+                      <th align="center">Price</th>
+                      <th align="center">Discouunt</th>
+                    </tr>
+                    </thead>
+                    <tr *ngFor="let p of HotelFavourOne">
+                      <td align="center">{{p.name}}</td>
+                      <td align="center">{{p.price}}</td>
+                      <td align="center">{{p.discount}}%</td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Room configuration</div>
+                  <table class="table">
+                    <thead class="table-dark text-white">
+                    <tr>
+                      <th align="center">Room number</th>
+                      <th align="center">Room name</th>
+                      <th align="center">Enter date</th>
+                      <th align="center">Date out</th>
+                      <th align="center">Reserved</th>
+                      <th align="center">Price</th>
+                      <th align="center">Number of bed</th>
+                      <th align="center">Number of floor</th>
+                    </tr>
+                    </thead>
+                    <tr *ngFor="let room of RoomHotel">
+                      <td align="center">{{room.number_of_room}}</td>
+                      <td align="center">{{room.name}}</td>
+                      <td align="center">{{room.date_in | date : 'dd/MM/yyyy'}}</td>
+                      <td align="center">{{room.date_out | date : 'dd/MM/yyyy'}}</td>
+                      <td align="center">{{room.reserved}}</td>
+                      <td align="center">{{room.price}}</td>
+                      <td align="center">{{room.number_bed}}</td>
+                      <td align="center">{{room.number_floor}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <button type="submit" class="btn brn-primary">Change</button>
+            </form>
+            <div><canvas id="chartContainer" style="height: 370px; width: 50%;"></canvas></div>
+            <button class="btn btn-sm btn-block btn-primary" (click)="showAllRoomDialog()">Show roooms</button>
+            <div hidden="{{allRoomHidden}}">
+              <h4 class="blue">
+                <span class="middle">All rooms</span>
+              </h4>
+              <form (submit)="editRoom($event)">
+                <table class="table">
+                  <thead class="table-dark text-white">
+                  <tr>
+                    <th align="center">Room number</th>
+                    <th align="center">Room name</th>
+                    <th align="center">Enter date</th>
+                    <th align="center">Date out</th>
+                    <th align="center">Reserved</th>
+                    <th align="center">Price</th>
+                    <th align="center">Number of bed</th>
+                    <th align="center">Number of floor</th>
+                    <th align="center">Edit</th>
+                    <th align="center">Delete</th>
+                  </tr>
+                  </thead>
+                  <tr *ngFor="let room of RoomHotell">
+                    <td align="center">{{room.number_of_room}}</td>
+                    <td align="center"><input type="text" id="name{{room.id}}" value="{{room.name}}"/></td>
+                    <td align="center"><input type="date" id="dateI{{room.id}}" value="{{room.date_in}}"/></td>
+                    <td align="center"><input type="date" id="out{{room.id}}" value="{{room.date_out}}"/></td>
+                    <td align="center"><input id="reserved{{room.id}}" disabled value="{{room.reserved}}"/></td>
+                    <td align="center"><input type="text" id="price{{room.id}}" value="{{room.price}}"/></td>
+                    <td align="center"><input type="text" id="bed{{room.id}}" value="{{room.number_bed}}"/></td>
+                    <td align="center"><input type="text" id="floor{{room.id}}" value="{{room.number_floor}}"/></td>
+                    <td><button type="submit" class="btn btn-outline-primary" (click)="EditRoom(room)">Edit</button></td>
+                    <td><button type="button" class="btn btn-outline-primary" (click)="DeleteRoom(room.id)">Delete</button></td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+            <button class="btn btn-sm btn-block btn-primary" (click)="ShowAddRoomDialog()">Add room</button>
+            <div hidden="{{showAddRoom}}">
+              <h4 class="blue">
+                <span class="middle">Add room</span>
+              </h4>
+              <form (submit)="addRoom($event)">
+                <table class="table">
+                  <thead class="table-dark text-white">
+                  <tr>
+                    <th align="center">Room number</th>
+                    <th align="center">Room name</th>
+                    <th align="center">Enter date</th>
+                    <th align="center">Date out</th>
+                    <th align="center">Reserved</th>
+                    <th align="center">Price</th>
+                    <th align="center">Number of bed</th>
+                    <th align="center">Number of floor</th>
+                    <th align="center">Add</th>
+                  </tr>
+                  </thead>
+                  <tr>
+                    <td align="center"><input type="text" id="number"></td>
+                    <td align="center"><input type="text" id="na"/></td>
+                    <td align="center"><input type="date" id="dateI"/></td>
+                    <td align="center"><input type="date" id="out"/></td>
+                    <td align="center">false</td>
+                    <td align="center"><input type="text" id="priceR"/></td>
+                    <td align="center"><input type="text" id="bed"/></td>
+                    <td align="center"><input type="text" id="floor"/></td>
+                    <td><button type="submit" class="btn btn-outline-primary">Add</button></td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+            <button class="btn btn-sm btn-block btn-primary" (click)="ShowFavourDialog()">Add favour</button>
+            <div hidden="{{addFavour}}">
+              <h4 class="blue">
+                <span class="middle">Add Favour</span>
+              </h4>
+              <form (submit)="addFavourPrice($event)">
+                <table class="table">
+                  <thead class="table-dark text-white">
+                  <tr>
+                    <th align="center">Favour name</th>
+                    <th align="center">Price</th>
+                    <th align="center">Discount  %</th>
+                  </tr>
+                  </thead>
+                  <tr>
+                    <td align="center"><input type="text" id="favourName"/></td>
+                    <td align="center"><input type="text" id="pri"/></td>
+                    <td align="center"><input type="text" id="dis"/></td>
+                    <td><button type="submit" class="btn btn-outline-primary">Add</button></td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </div>
+      </div>
+      <div *ngIf="authority=='ADMIN_ADMIN'" id="home4" class="tab-pane">
+        <button class="btn btn-sm btn-block btn-primary" (click)="ShowAvioDialog()">Create Avio</button>
+        <div hidden="{{createAvio}}">
+          <div class="col-xs-12 col-sm-9">
+            <h4 class="blue">
+              <span class="middle">Create Avio Company</span>
+            </h4>
+            <form (submit)="createAvioo($event)">
+            <div class="profile-user-info">
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Name</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="avNa"/>
+                </div>
+              </div>
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Address</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="avAddr"/>
+                </div>
+              </div>
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Promo description</div>
+
+                <div class="profile-info-value">
+                  <textarea row="5" type="text" id="avPromo"></textarea>
+                </div>
+              </div>
+              <div class="profile-info-value">
+                <button type="submit">Submit changes</button>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-block btn-primary" (click)="ShowHotelDialog()">Create Hotel</button>
+        <div hidden="{{createHotel}}">
+          <div class="col-xs-12 col-sm-9">
+            <h4 class="blue">
+              <span class="middle">Create Hotel</span>
+            </h4>
+            <form (submit)="createHotels($event)">
+            <div class="profile-user-info">
+              <div class="profile-info-row">
+                <div class="profile-info-name">Name</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="hotNa"/>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Address</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="hotAddr"/>
+                </div>
+              </div>
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Promo description</div>
+
+                <div class="profile-info-value">
+                  <textarea row="5" type="text" id="hotPromo"></textarea>
+                </div>
+              </div>
+              <div class="profile-info-value">
+                <button type="submit">Submit changes</button>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-block btn-primary" (click)="ShowRentDialog()">Create Renta Car</button>
+        <div hidden="{{createRent}}">
+          <div class="col-xs-12 col-sm-9">
+            <h4 class="blue">
+              <span class="middle">Create Renta Car</span>
+            </h4>
+            <form (submit)="createRentaa($event)">
+            <div class="profile-user-info">
+              <div class="profile-info-row">
+                <div class="profile-info-name">Name</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="rentNa"/>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Address</div>
+
+                <div class="profile-info-value">
+                  <input type="text" id="rentAddr"/>
+                </div>
+              </div>
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Promo description</div>
+
+                <div class="profile-info-value">
+                  <textarea row="5" type="text" id="rentPromo"></textarea>
+                </div>
+              </div>
+              <div class="profile-info-value">
+                <button type="submit">Submit changes</button>
+              </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="authority=='ADMIN_ADMIN'" id="home5" class="tab-pane">
+        <div class="col-xs-12 col-sm-9">
+          <h4 class="blue">
+            <span class="middle">Users</span>
+          </h4>
+          <form (submit)="changeAuthority($event)">
+            <table class="table">
+              <thead class="table-dark text-white">
+              <tr>
+                <th align="center">Name</th>
+                <th align="center">Surname</th>
+                <th align="center">Email</th>
+                <th align="center">Authority</th>
+                <th align="center">Change Authority</th>
+              </tr>
+              </thead>
+              <tr *ngFor="let us of users">
+                <td align="center">{{us.name}}</td>
+                <td align="center">{{us.surname}}</td>
+                <td align="center">{{us.email}}</td>
+                <td align="center"><p *ngFor="let a of us.authority">{{a.name}}</p></td>
+                <td align="center">
+                  <select id="changeAuth{{us.username}}">
+                      <option *ngFor="let auth of allAuthority" value="{{auth.name}}">{{auth.name}}</option>
+                  </select>
+                </td>
+                <td><button type="submit" (click)="chaAuth(us)" class="btn btn-outline-primary">Add</button></td>
+                <td><button type="submit" (click)="delAuth(us)" class="btn btn-outline-primary">Delete</button></td>
+              </tr>
+            </table>
+          </form>
+          <h4 class="blue">
+            <span class="middle">Change or add hotel/renta/avio</span>
+          </h4>
+          <form (submit)="addAndChange($event)">
+            <table class="table">
+              <thead class="table-dark text-white">
+              <tr>
+                <th align="center">Name</th>
+                <th align="center">Surname</th>
+                <th align="center">Email</th>
+                <th align="center">Authority</th>
+                <th align="center">Select Hotel</th>
+                <th align="center">Select AvioCompany</th>
+                <th align="center">Select RentaCar</th>
+              </tr>
+              </thead>
+              <tr *ngFor="let us of users">
+                <td align="center">{{us.name}}</td>
+                <td align="center">{{us.surname}}</td>
+                <td align="center">{{us.email}}</td>
+                <td align="center"><p *ngFor="let a of us.authority">{{a.name}}</p></td>
+                <td align="center">
+                  <select id="Idhot{{us.username}}">
+                    <option value=""></option>
+                    <option *ngFor="let h of idHotel" value="{{h.name}}">{{h.name}}</option>
+                  </select>
+                </td>
+                <td align="center">
+                  <select id="Idavio{{us.username}}">
+                    <option value=""></option>
+                    <option *ngFor="let a of idAvio" value="{{a.name}}">{{a.name}}</option>
+                  </select>
+                </td>
+                <td align="center">
+                  <select id="Idrenta{{us.username}}">
+                    <option value=""></option>
+                    <option *ngFor="let r of idRenta" value="{{r.name}}">{{r.name}}</option>
+                  </select>
+                </td>
+                <td><button type="submit" (click)="change(us)" class="btn btn-outline-primary">Change</button></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

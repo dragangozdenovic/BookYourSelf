@@ -1,0 +1,36 @@
+<!-- Button trigger modal -->
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLongTitle">Renta Car</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="overflow-y:scroll;max-height:500px;">
+      <form>
+        <div class="form-row">
+          <img *ngIf="car.image!==undefined" src="../assets/cars/{{car.image}}" width="400" height="300"/>
+        </div>
+        <div class="col">
+          <div class="col-form-label col-md-6">
+            <label>Model</label>
+            <input type="text" class="form-control" value="{{car.model}}"  disabled>
+          </div>
+          <div class="col-form-label col-md-12">
+            <label>Producer</label>
+            <input type="text" class="form-control" value="{{car.producer}}"  disabled>
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <input row="5" class="form-control" value="{{car.type}}" disabled>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input row="5" class="form-control" value="{{car.productionYear}}" disabled>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

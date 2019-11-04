@@ -1,0 +1,259 @@
+<section class="home-slider owl-carousel">
+  <div class="slider-item" style="background-image: url('../assets/hotels/hotel-2.jpg');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row slider-text align-items-center">
+        <div class="col-md-7 col-sm-12 ftco-animate">
+          <p class="breadcrumbs"><span class="mr-2"><a routerLink="/">Home</a></span> <span>Hotels</span></p>
+          <h1 class="mb-3">Hotels</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END slider -->
+<div class="ftco-section-search">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 tabulation-search">
+        <div class="element-animate">
+          <div class="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link p-3" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Hotel</a>
+          </div>
+        </div>
+        <div class="tab-content py-5" id="v-pills-tabContent">
+        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+          <div class="block-17">
+            <form (submit)="searchHotel($event)" class="d-block d-lg-flex">
+              <div class="fields d-block d-lg-flex">
+                <div class="textfield-search one-third">
+                  <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                      <input type="text" [(ngModel)]="HotName" [ngModelOptions]="{standalone: true}" placeholder="Hotel name/location" aria-label="Number" matInput [matAutocomplete]="auto">
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of AllHotels"  [value]="option.name">
+                           Name: {{option.name}}
+                        </mat-option>
+                        <mat-option *ngFor="let option of AllHotels"  [value]="option.address">
+                          Address: {{option.address}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </form>
+                </div>
+                <div class="check-in one-third"><input type="date" min="2014-01-01" max="2018-12-31" id="dateIn" name="dateIn" class="form-control" placeholder="Check-in date"></div>
+                <div class="check-out one-third"><input type="date" min="2014-01-01" max="2018-12-31" id="dateOut" name="dateOut" class="form-control" placeholder="Check-out date"></div>
+              </div>
+              <input type="submit" class="search-submit btn btn-primary" value="Find Hotels">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<!-- REZERVACIJA HOTELA-->
+<div class="container">
+  <div class="stepwizard col-md-offset-3">
+    <div class="stepwizard-row setup-panel">
+      <div class="stepwizard-step">
+        <a type="button" class="btn btn-primary btn-circle" id="1">1</a>
+        <p>Hotels</p>
+      </div>
+      <div class="stepwizard-step">
+        <a type="button" class="btn btn-default btn-circle dis" id="2" >2</a>
+        <p>Information</p>
+      </div>
+      <div class="stepwizard-step">
+        <a type="button" class="btn btn-default btn-circle dis" id="3">3</a>
+        <p>Rooms</p>
+      </div>
+      <div class="stepwizard-step">
+        <a type="button" class="btn btn-default btn-circle dis" id="4">4</a>
+        <p>Add Favour</p>
+      </div>
+    </div>
+  </div>
+  <form (submit)="chooseHotel($event)">
+    <div class="row setup-content" hidden="{{hot}}">
+      <div class="col-xs-6 col-md-offset-3">
+        <div class="col-md-12">
+          <h3> Reserve Hotel</h3>
+          <div class="form-group">
+            <table class="table" style="border: 1px solid">
+              <thead class="table-dark text-white">
+              <tr>
+                <td align="center"></td>
+                <td align="center"><b>Name</b></td>
+                <td align="center"><b>Address</b></td>
+                <td align="center"><b>Income</b></td>
+                <td align="center"><b>Chosen</b></td>
+              </tr>
+              </thead>
+              <tr *ngFor="let h of hotels">
+                <td align="center"><img src="../assets/hotels/{{h.image}}" width="50" height="50"/>
+                </td>
+                <td align="center">{{h.name}}</td>
+                <td align="center">{{h.address}}</td>
+                <td align="center">{{h.income}}</td>
+                <td align="center"><input type="radio" name="hotelId" value="{{h.id}}" checked></td>
+              </tr>
+            </table>
+          </div>
+          <button class="btn btn-success nextBtn btn-lg pull-right" id="next1" (click)="information()" type="submit">Next</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form (submit)="infoData($event)">
+    <div class="row setup-content" hidden="{{info}}">
+      <div class="col-xs-6 col-md-offset-3">
+        <div class="col-md-12">
+          <h3>Information data</h3>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Date departure</label>
+              <input type="date" class="form-control" id="dat" required/>
+            </div>
+            <div class="form-group col-md-3">
+              <label>Night</label>
+              <input type="text" class="form-control" id="night" required/>
+            </div>
+            <div class="form-group col-md-3">
+              <label>Guest</label>
+              <input type="text" class="form-control" id="guest" required/>
+            </div>
+            <div class="form-group col-md-3">
+              <label>Room count</label>
+              <input type="text" class="form-control" id="count" required/>
+            </div>
+            <div class="form-group col-md-3">
+              <label>Type of room</label>
+              <mat-form-field>
+                <mat-select placeholder="Type of room" [(ngModel)]="SelectRoom" [ngModelOptions]="{standalone: true}" multiple>
+                  <mat-option *ngFor="let r of typeOfRoom" [value]="r">{{r}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-3">
+              <label>Price From</label>
+              <mat-slider [(ngModel)]="priceF" [ngModelOptions]="{standalone: true}" min="0" max="1000" thumbLabel></mat-slider>
+            </div>
+            <div class="form-group col-md-3">
+              <label>Price To</label>
+              <mat-slider [(ngModel)]="priceT" [ngModelOptions]="{standalone: true}" min="0" max="1000" thumbLabel></mat-slider>
+            </div>
+          </div>
+          <button class="btn btn-primary prevBtn btn-lg pull-right" id="prev1" (click)="hotel()" type="button">Prev</button>
+          <button class="btn btn-success nextBtn btn-lg pull-right" id="next2" (click)="showRoom()" type="submit">Next</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form (submit)="RoomReserved($event)">
+    <div class="row setup-content" hidden="{{rooms}}">
+      <div class="col-xs-6 col-md-offset-3">
+        <div class="col-md-12">
+          <h3>Rooms</h3>
+          <div class="form-row">
+            <table class="table" style="border: 1px solid">
+              <thead class="table-dark text-white">
+              <tr>
+                <td align="center"><b>Room number</b></td>
+                <td align="center"><b>Room name</b></td>
+                <td align="center"><b>Number of floor</b></td>
+                <td align="center"><b>Number of bed</b></td>
+                <td align="center"><b>Reserved</b></td>
+                <td align="center"><b>Average</b></td>
+                <td align="center"><b>Total price</b></td>
+                <td align="center"><b>Choose</b></td>
+              </tr>
+              </thead>
+              <tr *ngFor="let ro of roomType1">
+                <td align="center">{{ro.number_of_room}}</td>
+                <td align="center">{{ro.name}}</td>
+                <td align="center">{{ro.number_floor}}</td>
+                <td align="center">{{ro.number_bed}}</td>
+                <td align="center">{{ro.reserved}}</td>
+                <td align="center"></td>
+                <td align="center">{{ro.price}}</td>
+                <td align="center"><input type="checkbox" (change)="RoomSelect(ro)" value="{{ro.id}}"></td>
+              </tr>
+            </table>
+          </div>
+          <button class="btn btn-primary prevBtn btn-lg pull-right" id="prev2" (click)="information()" type="button">Prev</button>
+          <button class="btn btn-success nextBtn btn-lg pull-right" id="next3" (click)="favour()" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form (submit)="HotelFavour($event)">
+    <div class="row setup-content" hidden="{{favours}}">
+      <div class="col-xs-6 col-md-offset-3">
+        <div class="col-md-12">
+          <h3>Favour of hotel</h3>
+          <div class="form-group">
+            <table class="table" style="border: 1px solid">
+              <thead class="table-dark text-white">
+              <tr>
+                <td align="center"><b>Favour name</b></td>
+                <td align="center"><b>Price</b></td>
+                <td align="center"><b>Discount %</b></td>
+                <td align="center"><b>Chosen</b></td>
+              </tr>
+              </thead>
+              <tr *ngFor="let f of HotelFav">
+                <td align="center">{{f.name}}</td>
+                <td align="center">{{f.price}}</td>
+                <td align="center">{{f.discount}}</td>
+                <td align="center"><input type="checkbox" (change)="AddFavour(f)" value="{{f.id}}"></td>
+              </tr>
+            </table>
+          </div>
+          <button class="btn btn-primary prevBtn btn-lg pull-right" id="prev3" (click)="showRoom()" type="button">Prev</button>
+          <button class="btn btn-success nextBtn btn-lg pull-right" (click)="favour()" type="submit">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+<!--LEPSI PRIKAZ HOTELA-->
+<section class="ftco-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="row">
+          <div class="col-md-6 col-lg-6 mb-4 ftco-animate" *ngFor="let hot of hotels">
+            <a routerLink="/viewHotel" (click)="hotelPrev(hot)" class="block-5" *ngIf="room===null" data-toggle="modal" data-target="#exampleModalLong2">
+              <img src="../assets/hotels/{{hot.image}}">
+              <div class="text">
+                <h3 class="heading">{{hot.name}}</h3>
+                <div class="post-meta">
+                  <span>Address : {{hot.address}}</span>
+                  <span>Description :{{hot.promoDescription}}</span>
+                </div>
+                <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span> <span>500 reviews</span></p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6 col-lg-6 mb-4 ftco-animate" *ngFor="let hot of hotels">
+            <div *ngIf="room!==null">
+              <div *ngFor="let r of room">
+            <a routerLink="/viewHotel" (click)="hotelPrev(hot)" class="block-5"  *ngIf="r.hot===hot.id" data-toggle="modal" data-target="#exampleModalLong2">
+              <img src="../assets/hotels/{{hot.image}}">
+              <div class="text">
+                <h3 class="heading">{{hot.name}}</h3>
+                <div class="post-meta">
+                  <span>{{hot.promoDescription}}</span>
+                </div>
+                <p class="star-rate"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star-half-full"></span> <span>500 reviews</span></p>
+              </div>
+            </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+</section>
